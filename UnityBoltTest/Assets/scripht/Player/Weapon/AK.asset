@@ -22,3 +22,6 @@ MonoBehaviour:
   dmg: 25
   maxRange: 30
   precision: 0.3
+  trail: {fileID: 8859959494514293706, guid: 459e49dd6fd77a1468653846f5dea4d7, type: 3}
+  decal: {fileID: 1933340755991063357, guid: da8fb23c6ef4088458338721cebb92da, type: 3}
+  impact: {fileID: 3166275419206024178, guid: ef26ad83493f48f45b7b3098e31d7717, type: 3}

@@ -71,7 +71,8 @@ public class PlayerMotor : EntityBehaviour<IPlayerState>
 
         _cam.transform.localEulerAngles = new Vector3(pitch, 0f, 0f);
         transform.rotation = Quaternion.Euler(0, yaw, 0);
-
+        //On sinchronise l'engle de vue
+        if (entity.IsOwner) { state.Pitch = (int)pitch; }
         State stateMotor = new State();
         stateMotor.position = transform.position;
         stateMotor.rotation = yaw;
@@ -133,7 +134,13 @@ public class PlayerMotor : EntityBehaviour<IPlayerState>
             transform.position += (_lastServerPos - transform.position) * 0.5f;
         }
     }
-
+    //Deh que le Pitch d'un joeur est modifier quelque part cette fonction sera lancé , si on est pas le concerner alors la camera de ce joeur sera modifié
+    //On partage l'angle de vu de tout les joueurs au autre joueurs
+    public void SetPitch()
+    {
+        if (!entity.IsControllerOrOwner)
+            _cam.transform.localEulerAngles = new Vector3(state.Pitch, 0f, 0f);
+    }
     public struct State
     {
         public Vector3 position;
@@ -141,6 +148,7 @@ public class PlayerMotor : EntityBehaviour<IPlayerState>
     }
     //Cette fonction est appelé par le joeur qui nous a touché avec son arme et qui veux nous infliger des degats
     //Le server s'occupe donc de diminuer notre vie
+    //Le joeur qui veux diminuer notre vie demande a ce que on la diminue ,mais seul le serveur peux vraiment la diminuer
     public void Life(PlayerMotor killer, int life)
     {
         //Le server s'occupe alors de donner des degat au joeur

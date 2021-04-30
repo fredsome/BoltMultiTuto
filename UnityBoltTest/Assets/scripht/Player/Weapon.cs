@@ -6,6 +6,10 @@ using UnityEngine;
 public class Weapon : MonoBehaviour
 {
     protected Transform _camera;
+  
+  
+    [SerializeField]
+    private Transform _muzzle;
     //lire le scriptable object
     [SerializeField]
     protected WeaponStats _weaponStat = null;
@@ -19,7 +23,7 @@ public class Weapon : MonoBehaviour
     protected PlayerWeapons _playerWeapons;
     //La personne qu'on tuera avec l'arme
     protected PlayerMotor _playerMotor;
-
+    protected PlayerCallBacks _playerCallback;
     protected int _fireFrame = 0;
     private Coroutine _reloadCrt = null;
     //Permet de connaitre les degat qu'on inflige a la cible
@@ -40,6 +44,7 @@ public class Weapon : MonoBehaviour
 
     public virtual void Init(PlayerWeapons pw)
     {
+        _playerCallback = pw.GetComponent<PlayerCallBacks>();
         _playerWeapons = pw;
         _playerMotor = pw.GetComponent<PlayerMotor>();
         _camera = _playerWeapons.Cam.transform;
@@ -76,6 +81,12 @@ public class Weapon : MonoBehaviour
                 int dmg = 0;
                 _fireFrame = BoltNetwork.ServerFrame;
                 //TODO Fire effect
+                //Si je suis le server je dis a tout le monde de faire genre je tire: creer un Line pour la balle et un impact
+                if (_playerCallback.entity.IsOwner)
+                    _playerCallback.FireEffect(WeaponStat.precision, seed);
+                //Quand je suis le controlleur du joeur je tire vraiment et je fait un impact
+                if (_playerCallback.entity.HasControl)
+                    FireEffect(seed, WeaponStat.precision);
 
                 _currentAmmo -= _weaponStat.ammoPerShot;
                 Random.InitState(seed);
@@ -132,5 +143,44 @@ public class Weapon : MonoBehaviour
         _currentTotalAmmo -= _ammo;
         _currentAmmo = _ammo;
         _isReloading = false;
+    }
+    //Fonction qui s'occupe d'afficher des effect de bals a l'ecran
+    public virtual void FireEffect(int seed, float precision)
+    {
+        Random.InitState(seed);
+
+        for (int i = 0; i < _weaponStat.multiShot; i++)
+        {
+            Vector2 rnd = Random.insideUnitSphere * precision;
+            Ray r = new Ray(_camera.position, _camera.forward + (_camera.up * rnd.y) + (_camera.right * rnd.x));
+            RaycastHit rh;
+
+            if (Physics.Raycast(r, out rh))
+            {
+                if (_weaponStat.impact)
+                    Instantiate(_weaponStat.impact, rh.point, Quaternion.LookRotation(rh.normal));
+
+                if (_weaponStat.decal)
+                    if (!rh.rigidbody)
+                        Instantiate(_weaponStat.decal, rh.point, Quaternion.LookRotation(rh.normal));
+
+                if (_weaponStat.trail)
+                {
+                    var trailGo = Instantiate(_weaponStat.trail, _muzzle.position, Quaternion.identity);
+                    var trail = trailGo.GetComponent<LineRenderer>();
+
+                    trail.SetPosition(0, _muzzle.position);
+                    trail.SetPosition(1, rh.point);
+                }
+            }
+            else if (_weaponStat.trail)
+            {
+                var trailGo = Instantiate(_weaponStat.trail, _muzzle.position, Quaternion.identity);
+                var trail = trailGo.GetComponent<LineRenderer>();
+
+                trail.SetPosition(0, _muzzle.position);
+                trail.SetPosition(1, r.direction * _weaponStat.maxRange + _camera.position);
+            }
+        }
     }
 }

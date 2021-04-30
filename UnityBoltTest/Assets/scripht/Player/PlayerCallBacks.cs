@@ -2,13 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Bolt;
-public class PlayerCallBacks : EntityBehaviour<IPlayerState>
+public class PlayerCallBacks : EntityEventListener<IPlayerState>
 {
     private PlayerMotor _playerMotor;
-
+    private PlayerWeapons _playerWeapons;
     private void Awake()
     {
         _playerMotor = GetComponent<PlayerMotor>();
+        _playerWeapons = GetComponent<PlayerWeapons>();
     }
     //Cette fonction est appeler quand Bolt est au control de ce joeur et que tout a ete setup
     
@@ -17,6 +18,7 @@ public class PlayerCallBacks : EntityBehaviour<IPlayerState>
         //Deh le debut on attache la modification de la vie a une fonction qui sera appeler
         //Lorsque On a modifié LifePoints alors la fonction Update PlayerLife sera appelé
         state.AddCallback("LifePoints", UpdatePlayerLife);
+        state.AddCallback("Pitch", _playerMotor.SetPitch);
 
         //Si on est le server On Met la vie du joeur a une valeur par default au debut
         if (entity.IsOwner)
@@ -24,6 +26,21 @@ public class PlayerCallBacks : EntityBehaviour<IPlayerState>
 
             state.LifePoints = _playerMotor.TotalLife;
         }
+    }
+    //
+    public void FireEffect(float precision, int seed)
+    {
+        //Notre joueur dit a tout le monde sauf au server de creer l'effet de tire avec des balles tracantes
+        FireEffectEvent evnt = FireEffectEvent.Create(entity, EntityTargets.EveryoneExceptOwnerAndController);
+        evnt.Precision = precision;
+        evnt.Seed = seed;
+        evnt.Send();
+    }
+    //L'orsque ce joueur recoit l'ordre de creer un effet de tire il le fait 
+    //Tout le monde va donc le faire
+    public override void OnEvent(FireEffectEvent evnt)
+    {
+        _playerWeapons.FireEffect(evnt.Seed, evnt.Precision);
     }
     private void Update()
     {

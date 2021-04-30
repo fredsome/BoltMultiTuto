@@ -184,7 +184,6 @@
     <Compile Include="Library\PackageCache\com.unity.timeline@1.4.6\Editor\treeview\TimelineTreeView.cs" />
     <Compile Include="Library\PackageCache\com.unity.timeline@1.4.6\Editor\Manipulators\Trim\ITrimItemMode.cs" />
     <Compile Include="Library\PackageCache\com.unity.timeline@1.4.6\Editor\Signals\SignalEventDrawer.cs" />
-    <Compile Include="Library\PackageCache\com.unity.timeline@1.4.6\Editor\Actions\Menus\TimelineContextMenu.cs" />
     <Compile Include="Library\PackageCache\com.unity.timeline@1.4.6\Editor\Utilities\CustomTrackDrawerAttribute.cs" />
     <Compile Include="Library\PackageCache\com.unity.timeline@1.4.6\Editor\Actions\IMenuChecked.cs" />
     <Compile Include="Library\PackageCache\com.unity.timeline@1.4.6\Editor\Actions\IAction.cs" />
@@ -193,6 +192,7 @@
     <Compile Include="Library\PackageCache\com.unity.timeline@1.4.6\Editor\CustomEditors\MarkerTrackEditor.cs" />
     <Compile Include="Library\PackageCache\com.unity.timeline@1.4.6\Editor\UnityEditorInternals.cs" />
     <Compile Include="Library\PackageCache\com.unity.timeline@1.4.6\Editor\Signals\TreeView\SignalReceiverTreeView.cs" />
+    <Compile Include="Library\PackageCache\com.unity.timeline@1.4.6\Editor\Actions\Menus\TimelineContextMenu.cs" />
     <Compile Include="Library\PackageCache\com.unity.timeline@1.4.6\Editor\Manipulators\Utils\EditModeGUIUtils.cs" />
     <Compile Include="Library\PackageCache\com.unity.timeline@1.4.6\Editor\Utilities\Scopes\GUIMixedValueScope.cs" />
     <Compile Include="Library\PackageCache\com.unity.timeline@1.4.6\Editor\Utilities\TrackResourceCache.cs" />

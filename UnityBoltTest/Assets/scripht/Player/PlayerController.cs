@@ -22,7 +22,7 @@ public class PlayerController : EntityBehaviour<IPhysicState>
     private bool _fire;
     private bool _aiming;
     private bool _reload;
-     int _seed = 0;
+
 
     private float _mouseSensitivity = 5f;
 
@@ -82,8 +82,7 @@ public class PlayerController : EntityBehaviour<IPhysicState>
         _pitch = Mathf.Clamp(_pitch, -85, 85);
 
         _fire = Input.GetMouseButton(0);
-        if (_fire)
-            _seed = Random.Range(0, 1023);
+      
         _aiming = Input.GetMouseButton(1);
         _reload = Input.GetKey(KeyCode.R);
     }
@@ -104,13 +103,13 @@ public class PlayerController : EntityBehaviour<IPhysicState>
         input.Fire = _fire;
         input.Scope = _aiming;
         input.Reload = _reload;
-        input.Seed = _seed;
+      
 
         //cette ligne est tres importante, elle permet de lister tout les imputs fait par le joeur
         entity.QueueInput(input);
         //Le joueur fait bouger le personnage dans lui sont monde vrai monde
         _playerMotor.ExecuteCommand(_forward, _backward, _left, _right, _jump, _yaw, _pitch);
-        _playerWeapons.ExecuteCommand(_fire,_aiming,_reload,_seed);
+        _playerWeapons.ExecuteCommand(_fire,_aiming,_reload,BoltNetwork.ServerFrame % 1024);
     }
 
     //Le server et le client execute cette fonction
@@ -136,7 +135,7 @@ public class PlayerController : EntityBehaviour<IPhysicState>
                 cmd.Input.Jump,
                 cmd.Input.Yaw,
                 cmd.Input.Pitch);
-                _playerWeapons.ExecuteCommand(cmd.Input.Fire, cmd.Input.Scope, cmd.Input.Reload, cmd.Input.Seed);
+                _playerWeapons.ExecuteCommand(cmd.Input.Fire, cmd.Input.Scope, cmd.Input.Reload, cmd.ServerFrame % 1024);
             }
 
             cmd.Result.Position = motorState.position;

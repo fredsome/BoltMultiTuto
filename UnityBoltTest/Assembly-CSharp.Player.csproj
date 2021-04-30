@@ -56,7 +56,9 @@
     <Analyzer Include="C:\Program Files (x86)\Microsoft Visual Studio Tools for Unity\16.0\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\scripht\Player\WeaponStats.cs" />
     <Compile Include="Assets\scripht\Player\PlayerMotor.cs" />
+    <Compile Include="Assets\Aligned Games\Polygonal Modern Weapons Asset Package\Scripts\Utility\FlyCameraBehaviour.cs" />
     <Compile Include="Assets\scripht\AppManager.cs" />
     <Compile Include="Assets\scripht\Player\UIHealthBar.cs" />
     <Compile Include="Assets\scripht\Player\NetworkRigidbody.cs" />
@@ -64,14 +66,15 @@
     <Compile Include="Assets\scripht\Player\PlayerController.cs" />
     <Compile Include="Assets\scripht\Player\GUIcontroller.cs" />
     <Compile Include="Assets\scripht\PlayerSetupController.cs" />
-    <Compile Include="Assets\scripht\Player\PlayerCallBacks.cs" />
-    <Compile Include="Assets\scripht\NetworkManager.cs" />
     <Compile Include="Assets\scripht\Player\PlayerWeapons.cs" />
     <Compile Include="Assets\scripht\Player\Weapon.cs" />
-    <Compile Include="Assets\scripht\Player\WeaponStats.cs" />
+    <Compile Include="Assets\scripht\Player\PlayerCallBacks.cs" />
+    <Compile Include="Assets\scripht\NetworkManager.cs" />
+    <Compile Include="Assets\destroyTimer.cs" />
   </ItemGroup>
   <ItemGroup>
      <None Include="Assets\Photon\PhotonLibs\netstandard2.0\Photon3Unity3D.xml" />
+     <None Include="Assets\Aligned Games\Polygonal Modern Weapons Asset Package\Shaders\Diffuse.shader" />
      <None Include="Assets\Photon\PhotonLibs\changes-library.txt" />
      <None Include="Assets\Photon\PhotonLibs\netstandard2.0\Photon3Unity3D.dll" />
      <None Include="Assets\Photon\PhotonLibs\Photon3Unity3D.dll" />

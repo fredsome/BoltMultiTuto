@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+
 using UnityEngine;
 [CreateAssetMenu(fileName = "New Weapon", menuName = "Equipment/Weapon")]
 public class WeaponStats : ScriptableObject
@@ -16,4 +15,8 @@ public class WeaponStats : ScriptableObject
     public int dmg = 25;
     public int maxRange = 30;
     public float precision = 0.3f;
+    [Space(10)]
+    public GameObject trail;
+    public GameObject decal;
+    public GameObject impact;
 }
